@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 
 import org.uplus.papper.R;
 import org.uplus.papper.adapters.PicPagerAdapter;
+import org.uplus.papper.views.PagerSlidingTabStrip;
 
 /**
  * Created by youjia.zyj on 2014/5/28.
@@ -37,6 +38,9 @@ public class MainActivity extends FragmentActivity {
         viewPager.setOffscreenPageLimit(3);
         PicPagerAdapter adapter = new PicPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+
+        PagerSlidingTabStrip slidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.pager_title_strip);
+        slidingTabStrip.setViewPager(viewPager);
     }
 
 }
