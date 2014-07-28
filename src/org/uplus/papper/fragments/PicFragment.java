@@ -26,13 +26,17 @@ import java.io.File;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import pulltorefresh.ActionBarPullToRefresh;
+import pulltorefresh.PullToRefreshLayout;
+import pulltorefresh.listeners.OnRefreshListener;
 
 /**
  * Created by youjia.zyj on 2014/5/31.
  */
-public class PicFragment extends Fragment {
+public class PicFragment extends Fragment implements OnRefreshListener {
     public static final String ARG_CHANNEL = "channel";
 
+    private PullToRefreshLayout mPullToRefreshLayout;
     private PicAdapter mAdapter;
     private List<Pic> mPicList;
     private int mChannel;
@@ -50,6 +54,13 @@ public class PicFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.list, container, false);
+
+        mPullToRefreshLayout = (PullToRefreshLayout) rootView.findViewById(R.id.ptr_layout);
+        ActionBarPullToRefresh.from(getActivity())
+                .allChildrenArePullable()
+                .listener(this)
+                .setup(mPullToRefreshLayout);
+
         mAdapter = new PicAdapter(inflater);
         initListView(rootView, mAdapter);
         return rootView;
@@ -97,6 +108,7 @@ public class PicFragment extends Fragment {
     private void refreshUi() {
         dataDirty = false;
         mAdapter.setPics(mPicList);
+        mPullToRefreshLayout.setRefreshComplete();
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -109,5 +121,10 @@ public class PicFragment extends Fragment {
                 dataDirty = true;
             }
         }
+    }
+
+    @Override
+    public void onRefreshStarted(View view) {
+        JobUtil.addJob(new FetchPicJob(mChannel));
     }
 }
