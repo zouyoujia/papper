@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import org.uplus.papper.R;
 import org.uplus.papper.adapters.PicPagerAdapter;
@@ -38,9 +39,25 @@ public class MainActivity extends FragmentActivity {
         viewPager.setOffscreenPageLimit(3);
         PicPagerAdapter adapter = new PicPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-
-        PagerSlidingTabStrip slidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.pager_title_strip);
+        final int colors[] = getResources().getIntArray(R.array.gplus_colors);
+        final PagerSlidingTabStrip slidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.pager_title_strip);
         slidingTabStrip.setViewPager(viewPager);
+        slidingTabStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+                //do noting
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                slidingTabStrip.setIndicatorColor(colors[i % colors.length]);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+                //do nothing
+            }
+        });
     }
 
 }

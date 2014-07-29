@@ -38,6 +38,7 @@
         android:id="@id/ptr_progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/GPlusProgressBar"
         android:minHeight="@dimen/ptr_progress_bar_stroke_width"/>
 
 </RelativeLayout>
